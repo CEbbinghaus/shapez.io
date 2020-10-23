@@ -93,7 +93,12 @@ function bootApp() {
 		if(window.confirm("Either no or Wrong password Provided. Are you looking for Shapez.io?")){
 			window.location.href = "https://shapez.io";
 		}else{
-			return;
+			const password = window.prompt("Please Enter Password:");
+
+			if(password != "EachBubSign"){
+				window.alert("Wrong Password!");
+				return;
+			}
 		}
 	}
     app = new Application();
