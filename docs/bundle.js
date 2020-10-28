@@ -44167,7 +44167,7 @@ class HUDDebugInfo extends _base_hud_part__WEBPACK_IMPORTED_MODULE_0__["BaseHUDP
      */
     onModeChanged(mode) {
         this.element.setAttribute("data-mode", mode);
-        this.versionElement.innerText = `${"1.2.1"} @ ${"dev"} @ ${"78bdba06"}`;
+        this.versionElement.innerText = `${"1.2.1"} @ ${"dev"} @ ${"83bda35d"}`;
     }
 
     /**
@@ -61179,8 +61179,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game_item_registry__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./game/item_registry */ "./src/js/game/item_registry.js");
 /* harmony import */ var _game_meta_building_registry__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./game/meta_building_registry */ "./src/js/game/meta_building_registry.js");
 /* harmony import */ var _game_game_speed_registry__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./game/game_speed_registry */ "./src/js/game/game_speed_registry.js");
-/* harmony import */ var _core_query_parameters__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./core/query_parameters */ "./src/js/core/query_parameters.js");
-
 
 
 
@@ -61233,8 +61231,8 @@ if (window.coreThreadLoadedCb) {
 // }
 
 console.log(
-    `%cshapez.io ️%c\n© 2020 Tobias Springer IT Solutions\nCommit %c${"78bdba06"}%c on %c${new Date(
-        1603452343156
+    `%cshapez.io ️%c\n© 2020 Tobias Springer IT Solutions\nCommit %c${"83bda35d"}%c on %c${new Date(
+        1603864336475
     ).toLocaleString()}\n`,
     "font-size: 35px; font-family: Arial;font-weight: bold; padding: 10px 0;",
     "color: #aaa",
@@ -61266,21 +61264,13 @@ Object(_game_game_speed_registry__WEBPACK_IMPORTED_MODULE_10__["initGameSpeedReg
 let app = null;
 
 function bootApp() {
-	logger.log("Page Loaded");
+    logger.log("Page Loaded");
 
-	if(_core_query_parameters__WEBPACK_IMPORTED_MODULE_11__["queryParamOptions"].password == null || _core_query_parameters__WEBPACK_IMPORTED_MODULE_11__["queryParamOptions"].password != "EachBubSign"){
-		if(window.confirm("Either no or Wrong password Provided. Are you looking for Shapez.io?")){
-			window.location.href = "https://shapez.io";
-		}else{
-			const password = window.prompt("Please Enter Password:");
+    if (!window.confirm("This is not Shapez.io it is a Alternate Version for Testing Purposes. Continue?")) {
+        window.history.pushState({}, "", "https://shapez.io");
+        window.location.href = "https://shapez.io";
+    }
 
-			if(password != "EachBubSign"){
-				window.alert("Wrong Password!");
-				return;
-			}
-		}
-	}
-	
     app = new _application__WEBPACK_IMPORTED_MODULE_4__["Application"]();
     app.boot();
 }
@@ -69954,7 +69944,7 @@ class PreloadState extends _core_game_state__WEBPACK_IMPORTED_MODULE_3__["GameSt
 
                     <div class="lower">
                         <button class="resetApp styledButton">Reset App</button>
-                        <i>Build ${"1.2.1"} @ ${"78bdba06"}</i>
+                        <i>Build ${"1.2.1"} @ ${"83bda35d"}</i>
                     </div>
                 </div>
         `;
@@ -70086,14 +70076,14 @@ class SettingsState extends _core_textual_game_state__WEBPACK_IMPORTED_MODULE_0_
 
     renderBuildText() {
         const labelVersion = this.htmlElement.querySelector(".buildVersion");
-        const lastBuildMs = new Date().getTime() - 1603452343156;
+        const lastBuildMs = new Date().getTime() - 1603864336475;
         const lastBuildText = Object(_core_utils__WEBPACK_IMPORTED_MODULE_1__["formatSecondsToTimeAgo"])(lastBuildMs / 1000.0);
 
         const version = _translations__WEBPACK_IMPORTED_MODULE_3__["T"].settings.versionBadges["dev"];
 
         labelVersion.innerHTML = `
             <span class='version'>
-                ${"1.2.1"} @ ${version} @ ${"78bdba06"}
+                ${"1.2.1"} @ ${version} @ ${"83bda35d"}
             </span>
             <span class='buildTime'>
                 ${_translations__WEBPACK_IMPORTED_MODULE_3__["T"].settings.buildDate.replace("<at-date>", lastBuildText)}<br />
