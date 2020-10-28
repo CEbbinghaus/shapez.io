@@ -37,7 +37,7 @@ export class SavegameSerializer {
             hubGoals: root.hubGoals.serialize(),
             pinnedShapes: root.hud.parts.pinnedShapes.serialize(),
             waypoints: root.hud.parts.waypoints.serialize(),
-            entities: this.internal.serializeEntityArray(root.entityMgr.entities),
+            entities: this.internal.serializeEntityArray(Object.values(root.entityMgr.entities.Values)),
             beltPaths: root.systemMgr.systems.belt.serializePaths(),
         };
 
