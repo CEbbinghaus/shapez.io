@@ -10,7 +10,6 @@ import { initDrawUtils } from "./core/draw_utils";
 import { initItemRegistry } from "./game/item_registry";
 import { initMetaBuildingRegistry } from "./game/meta_building_registry";
 import { initGameSpeedRegistry } from "./game/game_speed_registry";
-import { queryParamOptions } from "./core/query_parameters";
 
 const logger = createLogger("main");
 
@@ -87,20 +86,13 @@ initGameSpeedRegistry();
 let app = null;
 
 function bootApp() {
-	logger.log("Page Loaded");
+    logger.log("Page Loaded");
 
-	if(queryParamOptions.password == null || queryParamOptions.password != "EachBubSign"){
-		if(window.confirm("Either no or Wrong password Provided. Are you looking for Shapez.io?")){
-			window.location.href = "https://shapez.io";
-		}else{
-			const password = window.prompt("Please Enter Password:");
+    if (!window.confirm("This is not Shapez.io it is a Alternate Version for Testing Purposes. Continue?")) {
+        window.history.pushState({}, "", "https://shapez.io");
+        window.location.href = "https://shapez.io";
+    }
 
-			if(password != "EachBubSign"){
-				window.alert("Wrong Password!");
-				return;
-			}
-		}
-	}
     app = new Application();
     app.boot();
 }
