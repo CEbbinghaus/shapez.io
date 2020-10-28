@@ -6,9 +6,12 @@ import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
 import { enumPinSlotType, WiredPinsComponent } from "../components/wired_pins";
 import { Entity } from "../entity";
-import { MetaBuilding } from "../meta_building";
+import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
 import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
+
+/** @enum {string} */
+export const enumFilterVariants = { dual: "dual" };
 
 export class MetaFilterBuilding extends MetaBuilding {
     constructor() {
@@ -24,10 +27,17 @@ export class MetaFilterBuilding extends MetaBuilding {
      */
     getIsUnlocked(root) {
         return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_filter);
-    }
+	}
 
     getDimensions() {
         return new Vector(2, 1);
+	}
+	
+	    /**
+     * @param {GameRoot} root
+     */
+    getAvailableVariants(root) {
+        return [defaultBuildingVariant, enumFilterVariants.dual];
     }
 
     getShowWiresLayerPreview() {
@@ -88,5 +98,41 @@ export class MetaFilterBuilding extends MetaBuilding {
         );
 
         entity.addComponent(new FilterComponent());
+	}
+	
+	/**
+     *
+     * @param {Entity} entity
+     * @param {number} rotationVariant
+     * @param {string} variant
+     */
+    updateVariants(entity, rotationVariant, variant) {
+        switch (variant) {
+            case defaultBuildingVariant: {
+                entity.components.ItemEjector.setSlots([{
+					pos: new Vector(0, 0),
+					direction: enumDirection.top,
+				},
+				{
+					pos: new Vector(1, 0),
+					direction: enumDirection.right,
+				}]);
+                break;
+            }
+            case enumFilterVariants.dual: {
+                entity.components.ItemEjector.setSlots([{
+					pos: new Vector(0, 0),
+					direction: enumDirection.top,
+				},
+				{
+					pos: new Vector(1, 0),
+					direction: enumDirection.top,
+				}]);
+                break;
+            }
+
+            default:
+                assertAlways(false, "Unknown Filter variant: " + variant);
+        }
     }
 }

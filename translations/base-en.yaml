@@ -678,6 +678,9 @@ buildings:
         default:
             name: &filter Filter
             description: Connect a signal to route all matching items to the top and the remaining to the right. Can be controlled with boolean signals too.
+        dual:
+            name: *filter
+            description: Connect a signal to route all matching items to the top left and the remaining to the top right. Can be controlled with boolean signals too.
 
     display:
         default:

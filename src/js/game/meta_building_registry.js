@@ -8,7 +8,7 @@ import { MetaComparatorBuilding } from "./buildings/comparator";
 import { MetaConstantSignalBuilding } from "./buildings/constant_signal";
 import { enumCutterVariants, MetaCutterBuilding } from "./buildings/cutter";
 import { MetaDisplayBuilding } from "./buildings/display";
-import { MetaFilterBuilding } from "./buildings/filter";
+import { MetaFilterBuilding, enumFilterVariants } from "./buildings/filter";
 import { MetaHubBuilding } from "./buildings/hub";
 import { MetaItemProducerBuilding } from "./buildings/item_producer";
 import { MetaLeverBuilding } from "./buildings/lever";
@@ -141,6 +141,7 @@ export function initMetaBuildingRegistry() {
 
     // Filter
     registerBuildingVariant(37, MetaFilterBuilding);
+    registerBuildingVariant(10000009, MetaFilterBuilding, enumFilterVariants.dual);
 
     // Wire tunnel
     registerBuildingVariant(39, MetaWireTunnelBuilding);
