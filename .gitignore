@@ -53,3 +53,5 @@ config.local.js
 
 #visual studio code configs
 .vscode
+# Mischief Art files
+*.art
