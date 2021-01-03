@@ -249,6 +249,12 @@ export class GameLogic {
             return wireTunnelComp.CanConnectWorld(targetStaticComp, offset);
         }
 
+        // Check if its a bundle
+        const bundleComp = targetEntity.components.Bundle;
+        if (bundleComp) {
+            return bundleComp.CanConnectWorld(targetStaticComp, offset);
+        }
+
         // Check if its a wire
         const wiresComp = targetEntity.components.Wire;
         if (!wiresComp) {
@@ -285,6 +291,14 @@ export class GameLogic {
             canConnectAtAll = true;
             for (let i = 0; i < tunnelComp.linkedNetworks.length; ++i) {
                 networks.add(tunnelComp.linkedNetworks[i]);
+            }
+        }
+
+        const bundleComp = entity.components.Bundle;
+        if (bundleComp) {
+            canConnectAtAll = true;
+            for (let i = 0; i < bundleComp.linkedNetworks.length; ++i) {
+                networks.add(bundleComp.linkedNetworks[i]);
             }
         }
 

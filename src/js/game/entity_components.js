@@ -19,6 +19,7 @@ import { DisplayComponent } from "./components/display";
 import { BeltReaderComponent } from "./components/belt_reader";
 import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
+import { BundleComponent } from "./components/bundle";
 /* typehints:end */
 
 /**
@@ -76,6 +77,9 @@ export class EntityComponentStorage {
 
         /** @type {WireTunnelComponent} */
         this.WireTunnel;
+
+        /** @type {BundleComponent} */
+        this.Bundle;
 
         /** @type {DisplayComponent} */
         this.Display;
