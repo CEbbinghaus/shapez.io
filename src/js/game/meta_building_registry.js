@@ -89,8 +89,9 @@ export function initMetaBuildingRegistry() {
 
     // Stacker
     registerBuildingVariant(14, MetaStackerBuilding);
-    //TODO: CHANGE BEFORE RELEASE
-    registerBuildingVariant(10000001, MetaStackerBuilding, enumStackerVariants.mirrored); //Temporary ID to avoid id collisions in development.
+    // TODO: CHANGE BEFORE RELEASE
+    registerBuildingVariant(10000001, MetaStackerBuilding, enumStackerVariants.mirrored);
+    // Temporary ID to avoid id collisions in development.
 
     // Mixer
     registerBuildingVariant(15, MetaMixerBuilding);
@@ -127,8 +128,8 @@ export function initMetaBuildingRegistry() {
     registerBuildingVariant(54, MetaWireBuilding, enumWireVariant.second, 2);
     registerBuildingVariant(55, MetaWireBuilding, enumWireVariant.second, 3);
 
-    //TODO: CHANGE BEFORE RELEASE
-    registerBuildingVariant(10000002, MetaWireBuilding, enumWireVariant.third, 0); //Temporary ID to avoid id collisions in development.
+    // TODO: CHANGE BEFORE RELEASE
+    registerBuildingVariant(10000002, MetaWireBuilding, enumWireVariant.third, 0); // Temporary ID to avoid id collisions in development.
     registerBuildingVariant(10000003, MetaWireBuilding, enumWireVariant.third, 1);
     registerBuildingVariant(10000004, MetaWireBuilding, enumWireVariant.third, 2);
     registerBuildingVariant(10000005, MetaWireBuilding, enumWireVariant.third, 3);
@@ -159,8 +160,8 @@ export function initMetaBuildingRegistry() {
     registerBuildingVariant(10000007, MetaWireTunnelBuilding, enumWireTunnelVariants.Straight);
     registerBuildingVariant(10000008, MetaWireTunnelBuilding, enumWireTunnelVariants.DoubleElbow);
 
-    registerBuildingVariant(10000009, MetaBundleBuilding);
-    registerBuildingVariant(10000010, MetaBundleBuilding, enumBundleVariants.TIntersection);
+    registerBuildingVariant(10000010, MetaBundleBuilding);
+    registerBuildingVariant(10000011, MetaBundleBuilding, enumBundleVariants.TIntersection);
 
     // Display
     registerBuildingVariant(40, MetaDisplayBuilding);
