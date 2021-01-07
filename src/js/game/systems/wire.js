@@ -19,6 +19,7 @@ import { getCodeFromBuildingData } from "../building_codes";
 import { enumWireType, enumWireVariant, WireComponent } from "../components/wire";
 import { enumPinSlotType, WiredPinsComponent } from "../components/wired_pins";
 import { WireTunnelComponent } from "../components/wire_tunnel";
+import { BundleComponent } from "../components/bundle";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { isTruthyItem } from "../items/boolean_item";
@@ -53,6 +54,12 @@ export class WireNetwork {
          * @type {Array<Entity>}
          */
         this.tunnels = [];
+
+        /**
+         * All connected bundles
+         * @type {Array<Entity>}
+         */
+        this.bundles = [];
 
         /**
          * Which wires are in this network
@@ -159,6 +166,7 @@ export class WireSystem extends GameSystemWithFilter {
         const wireEntities = this.root.entityMgr.getAllWithComponent(WireComponent);
         const tunnelEntities = this.root.entityMgr.getAllWithComponent(WireTunnelComponent);
         const pinEntities = this.root.entityMgr.getAllWithComponent(WiredPinsComponent);
+        const bundleEntities = this.root.entityMgr.getAllWithComponent(BundleComponent);
 
         // Clear all network references, but not on the first update since that's the deserializing one
         if (!this.isFirstRecompute) {
@@ -167,6 +175,10 @@ export class WireSystem extends GameSystemWithFilter {
             }
             for (let i = 0; i < tunnelEntities.length; ++i) {
                 tunnelEntities[i].components.WireTunnel.linkedNetworks = [];
+            }
+
+            for (let i = 0; i < bundleEntities.length; ++i) {
+                bundleEntities[i].components.Bundle.linkedNetworks = [];
             }
 
             for (let i = 0; i < pinEntities.length; ++i) {
@@ -391,6 +403,9 @@ export class WireSystem extends GameSystemWithFilter {
             const offset = enumDirectionToVector[direction];
             const initialSearchTile = initialTile.add(offset);
 
+            //Ensure no Infinite Loops by checking which Bundles have been visited
+            const visitedBundles = new Set();
+
             // First, find the initial connected entities
             const initialContents = this.root.map.getLayersContentsMultipleXY(
                 initialSearchTile.x,
@@ -467,10 +482,54 @@ export class WireSystem extends GameSystemWithFilter {
                     continue;
                 }
 
+                const bundleComp = entity.components.Bundle;
+                if (bundleComp && !visitedBundles.has(entity)) {
+                    visitedBundles.add(entity);
+
+                    const staticComp = entity.components.StaticMapEntity;
+                    const directions = bundleComp.GetOutputDirections(staticComp, dir);
+
+                    if (!directions) {
+                        continue;
+                    }
+
+                    VERBOSE_WIRES &&
+                        logger.log("   Found Bundle", entity.uid, "at", tile, "-> forwarding to", directions);
+
+                    for (let i = 0; i < directions.length; ++i) {
+                        const direction = directions[i];
+                        const forwardedTile = staticComp.origin.add(direction);
+
+                        // Figure out which entities are connected
+                        const connectedContents = this.root.map.getLayersContentsMultipleXY(
+                            forwardedTile.x,
+                            forwardedTile.y
+                        );
+
+                        // Attach the entities and the tile we search at, because it may change
+                        for (let h = 0; h < connectedContents.length; ++h) {
+                            contents.push({
+                                entity: connectedContents[h],
+                                tile: forwardedTile,
+                                dir: direction,
+                            });
+                        }
+
+                        // Add the tunnel to the network
+                        if (bundleComp.linkedNetworks.indexOf(network) < 0) {
+                            bundleComp.linkedNetworks.push(network);
+                        }
+                        if (network.bundles.indexOf(entity) < 0) {
+                            network.bundles.push(entity);
+                        }
+                    }
+
+                    logger.log("Found a Bundle");
+                }
+
                 // Check if it's a tunnel, if so, go to the forwarded item
                 const tunnelComp = entity.components.WireTunnel;
                 if (tunnelComp) {
-
                     const staticComp = entity.components.StaticMapEntity;
 
                     //const localDir = staticComp.worldToLocalTile(tile.sub(offset));
@@ -692,7 +751,12 @@ export class WireSystem extends GameSystemWithFilter {
      * @param {Entity} entity
      */
     isEntityRelevantForWires(entity) {
-        return entity.components.Wire || entity.components.WiredPins || entity.components.WireTunnel;
+        return (
+            entity.components.Wire ||
+            entity.components.WiredPins ||
+            entity.components.WireTunnel ||
+            entity.components.Bundle
+        );
     }
 
     /**

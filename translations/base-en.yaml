@@ -658,6 +658,14 @@ buildings:
             name: Double Elbow Tunnel
             description: Allows two wires to turn corners without connecting to each other.
 
+    bundle:
+        default:
+            name: &bundle Wire Bundle
+            description: &bundle_desc Lets Multiple Wires connect along the same Tunnel
+        t_intersection:
+            name: T Intersection
+            description: *bundle_desc
+
     constant_signal:
         default:
             name: &constant_signal Constant Signal
@@ -1151,6 +1159,7 @@ keybindings:
         lever: *lever
         filter: *filter
         wire_tunnel: *wire_tunnel
+        bundle: *bundle
         display: *display
         reader: *reader
         virtual_processor: *virtual_processor

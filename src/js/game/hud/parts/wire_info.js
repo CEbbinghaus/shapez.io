@@ -45,13 +45,8 @@ export class HUDWireInfo extends BaseHUDPart {
         }
 
         const networks = this.root.logic.getEntityWireNetworks(entity, tile);
-        if (networks === null) {
+        if (networks === null || networks.length === 0) {
             // This entity will never be able to be connected
-            return;
-        }
-
-        if (networks.length === 0) {
-            // No network at all
             return;
         }
 
@@ -110,6 +105,21 @@ export class HUDWireInfo extends BaseHUDPart {
                 x: screenTile.x,
                 y: screenTile.y,
                 entity: tunnel,
+                tileSizePixels: globalConfig.tileSize * this.root.camera.zoomLevel,
+                overrideColor: THEME.map.wires.highlightColor,
+            });
+        }
+
+        for (let i = 0; i < network.bundles.length; ++i) {
+            const bundle = network.bundles[i];
+            const staticComp = bundle.components.StaticMapEntity;
+            const screenTile = this.root.camera.worldToScreen(staticComp.origin.toWorldSpace());
+
+            MapChunkView.drawSingleWiresOverviewTile({
+                context: parameters.context,
+                x: screenTile.x,
+                y: screenTile.y,
+                entity: bundle,
                 tileSizePixels: globalConfig.tileSize * this.root.camera.zoomLevel,
                 overrideColor: THEME.map.wires.highlightColor,
             });
